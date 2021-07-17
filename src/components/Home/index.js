@@ -11,7 +11,7 @@ class Home extends Component {
     editableData: {},
     displayedData: [],
     checkedBoxesList: [],
-    showEditPage:false,
+    showEditPage: false,
   };
 
   componentDidMount() {
@@ -37,13 +37,13 @@ class Home extends Component {
   deleteRow = (id) => {
     const { data } = this.state;
     const modifiedData = data.filter((eachItem) => eachItem.id !== id);
-    this.setState({ data: modifiedData });
+    this.setState({ data: modifiedData , displayedData:modifiedData});
   };
 
   seteditRow = (id) => {
     const { data } = this.state;
     const editData = data.filter((eachItem) => eachItem.id === id);
-    this.setState({ editableData: editData[0], showEditPage:true});
+    this.setState({ editableData: editData[0], showEditPage: true });
   };
 
   editRowData = (rowData) => {
@@ -51,7 +51,7 @@ class Home extends Component {
     const rowDataId = rowData.id;
     const editData = data.filter((eachItem) => eachItem.id === rowDataId);
     editData[rowDataId] = rowData;
-    this.setState({ data, showEditPage:false });
+    this.setState({ data, showEditPage: false });
   };
 
   onUpdateSearch = (filteredData) => {
@@ -98,20 +98,27 @@ class Home extends Component {
     );
   };
 
-  closeEditTab = () =>{
-    this.setState({showEditPage:false})
-  }
+  closeEditTab = () => {
+    this.setState({ showEditPage: false });
+  };
 
   renderEditPage = () => {
     const { editableData, showEditPage } = this.state;
     return (
       <>
-      { showEditPage ?
-      (<div className="home-edit-module">
-        <div className="home-edit-section">
-          <EditData rowData={editableData} editRowData={this.editRowData} closeEditTab={this.closeEditTab}/>
-        </div>
-      </div>) : ""}
+        {showEditPage ? (
+          <div className="home-edit-module">
+            <div className="home-edit-section">
+              <EditData
+                rowData={editableData}
+                editRowData={this.editRowData}
+                closeEditTab={this.closeEditTab}
+              />
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
       </>
     );
   };
@@ -126,11 +133,7 @@ class Home extends Component {
           <div className="home-section">
             {isLoading ? "...loading" : this.renderTable()}
           </div>
-          {isLoading ? (
-            "...loading"
-          ) : (
-            this.renderEditPage()
-          )}
+          {isLoading ? "...loading" : this.renderEditPage()}
         </div>
       </>
     );
