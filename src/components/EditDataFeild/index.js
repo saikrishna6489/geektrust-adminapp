@@ -9,7 +9,7 @@ const EditDataFeild=(props)=>{
     return(
       <div className="edit-data-input-feild-section">
         <p className="edit-data-input-label">{feildKey}</p>
-        <input type="text" className="edit-data-input-feild" value={feildValue} onChange={onValueChange}/>
+        <input type="text" className="edit-data-input-feild form-control" value={feildValue} onChange={onValueChange}/>
       </div>
     )
 }
