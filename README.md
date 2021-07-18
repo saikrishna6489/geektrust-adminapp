@@ -6,6 +6,8 @@ with this project we can take any json data and can display the data in the tabl
 
 implemented pagination, search functionality for all records, we can delete and edit the rows 
 
+present used dataurl "https://geektrust.s3-ap-southeast-1.amazonaws.com/adminui-problem/members.json" 
+
 ```bash
 <DataTableMain itemsPerPage={10} tableData={data} restrictedColumns={["id", "email"]} />
 ```
@@ -19,7 +21,7 @@ we should provide props for the DataTableMain component
 
 ## 'warning ' : provided json data must have 'id' key  
 
-
+## this table works with json data with many number of columns 
 
 
 ## Available Scripts
