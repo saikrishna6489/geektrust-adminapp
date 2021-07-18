@@ -3,21 +3,32 @@ import { AiOutlineDelete } from "react-icons/ai";
 import "./index.css";
 
 const DataRow = (props) => {
-  const { rowData, deleteRow, seteditRow, onClickCheakBox } = props;
+  const { rowData, deleteRow, seteditRow, onClickCheakBox, checkedBoxesList, restrictedColumns } =
+    props;
+  restrictedColumns.forEach(element => {
+    delete rowData[element]
+  });
   const rowValues = Object.values(rowData);
+  const isChecked = checkedBoxesList.includes(rowData.id);
+  const rowClassName = isChecked ? "data-row-active" : "data-row";
   const deleteRowData = () => {
     deleteRow(rowData.id);
   };
   const editRowData = () => {
     seteditRow(rowData.id);
   };
-  const onClickCheakBoxInput = ()=>{
-    onClickCheakBox(rowData.id)
-  }
+  const onClickCheakBoxInput = () => {
+    onClickCheakBox(rowData.id);
+  };
   return (
-    <tr className="data-row">
+    <tr className={rowClassName}>
       <td className="data-row-item data-row-cheak-item">
-        <input type="checkbox" onClick={onClickCheakBoxInput}/>
+        <input
+          type="checkbox"
+          className="data-row-cheakbox"
+          onChange={onClickCheakBoxInput}
+          checked={isChecked}
+        />
       </td>
       {rowValues.map((eachItem) => (
         <td className="data-row-item" key={`${eachItem}${rowValues.id}`}>

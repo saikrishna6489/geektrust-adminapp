@@ -1,0 +1,11 @@
+.edit-data-container{
+    width:100%
+}
+.edit-data-input-label{
+    margin-top: 1rem;
+    margin-bottom: 0;
+    font-weight: 500;
+}
+.edit-data-close-button{
+    cursor: pointer;
+}

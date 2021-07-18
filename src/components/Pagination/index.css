@@ -1,0 +1,14 @@
+.pagination-each-page{
+    border-radius: 100%;
+    color: white;
+    background-color: blue;
+    padding: 4px 11px;
+    margin: 0px 7px;
+    cursor: pointer;
+}
+.pagination-each-page:active{
+    background-color: rgb(70, 70, 177);
+}
+.page-icon{
+    cursor: pointer;
+}

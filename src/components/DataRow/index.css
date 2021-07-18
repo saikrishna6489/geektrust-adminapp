@@ -4,3 +4,11 @@
 .data-row-item{
     margin: 0px 0px !important;
 }
+.data-row-active{
+    background-color: #e8dcdc8f;
+}
+.data-row-cheakbox{
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}

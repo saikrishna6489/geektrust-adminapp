@@ -1,9 +1,10 @@
 .home-edit-module{
     height:100vh;
     width:100vw;
-    background-color: #71696945;
+    background-color: #100e0e8c;
     position:fixed;
     top:0;
+    left:0;
     display:flex;
     flex-direction:row;
     justify-content:center;
@@ -17,7 +18,8 @@
     justify-content:center;
     align-items:center;
     padding: 20px;
+    border-radius: 10px;
 }
 .home-container{
-    padding:5% 10%
+    padding:3% 10%
 }

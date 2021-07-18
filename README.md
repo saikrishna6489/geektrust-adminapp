@@ -1,6 +1,26 @@
-# Getting Started with Create React App
+# GeekTrust DataTable 
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+the main agenda of this project is to create a reusable components 
+
+with this project we can take any json data and can display the data in the table format
+
+implemented pagination, search functionality for all records, we can delete and edit the rows 
+
+```bash
+<DataTableMain itemsPerPage={10} tableData={data} restrictedColumns={["id", "email"]} />
+```
+we should provide props for the DataTableMain component 
+
+### `itemsPerPage` -> must specify to display how many items should be for page 
+
+### `tableData` -> provide data which should be displayed
+
+### `restrictedColumns` -> pass the array of column key names that you dont want to display on table
+
+## 'warning ' : provided json data must have 'id' key  
+
+
+
 
 ## Available Scripts
 
