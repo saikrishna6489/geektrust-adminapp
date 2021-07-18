@@ -9,7 +9,7 @@ implemented pagination, search functionality for all records, we can delete and 
 present used dataurl "https://geektrust.s3-ap-southeast-1.amazonaws.com/adminui-problem/members.json" 
 
 ```bash
-<DataTableMain itemsPerPage={10} tableData={data} restrictedColumns={["id", "email"]} />
+<DataTableMain itemsPerPage={10} tableData={data} restrictedColumns={["id", "age"]} restrictedEditColumns={"email"}/>
 ```
 we should provide props for the DataTableMain component 
 
@@ -18,6 +18,8 @@ we should provide props for the DataTableMain component
 ### `tableData` -> provide data which should be displayed
 
 ### `restrictedColumns` -> pass the array of column key names that you dont want to display on table
+
+### `restrictedEditColumns` -> pass the array of column key names that you dont want to be editable on table
 
 ## 'warning ' : provided json data must have 'id' key  
 

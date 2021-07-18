@@ -29,9 +29,9 @@ class Home extends Component {
         {isLoading ? (
           <p>'...isloading'</p>
         ) : (
-          <DataTableMain itemsPerPage={10} tableData={data} />
+          <DataTableMain itemsPerPage={5} tableData={data} restrictedColumns={[]} restrictedEditColumns={"name"}/>
         )}
-      </>
+        </>
     );
   }
 }

@@ -121,7 +121,7 @@ class DataTableMain extends Component {
 
   renderTable = () => {
     const { pageData, checkedBoxesList } = this.state;
-    const { restrictedColumns } = this.props
+    const { restrictedColumns } = this.props;
     return (
       <>
         <DataTable
@@ -146,6 +146,7 @@ class DataTableMain extends Component {
 
   renderEditTab = () => {
     const { editableData, showEditPage } = this.state;
+    const { restrictedEditColumns } = this.props;
     return (
       <>
         {showEditPage ? (
@@ -155,6 +156,7 @@ class DataTableMain extends Component {
                 rowData={editableData}
                 editRowData={this.editRowData}
                 closeEditTab={this.closeEditTab}
+                restrictedEditColumns={restrictedEditColumns}
               />
             </div>
           </div>
@@ -173,13 +175,11 @@ class DataTableMain extends Component {
       <>
         <div className="home-container">
           <Search entiredata={data} onUpdateSearch={this.onUpdateSearch} />
-          <div className="home-section">
-            {isLoading ? "...loading" : this.renderTable()}
-          </div>
           {isLoading ? (
             "...loading"
           ) : (
             <>
+              <div className="home-section">{this.renderTable()}</div>
               {this.renderEditTab()}
               <Pagination
                 totalItems={displayedData.length}
@@ -195,8 +195,12 @@ class DataTableMain extends Component {
   }
 }
 
-DataTableMain.defaultProps={
-  restrictedColumns: []
+DataTableMain.defaultProps = {
+  restrictedColumns: [],
+  restrictedEditColumns: [],
+  itemsPerPage: 10,
+  removable: true,
+  editable:true
 };
 
 export default DataTableMain;
