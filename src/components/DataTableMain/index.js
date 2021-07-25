@@ -76,9 +76,11 @@ class DataTableMain extends Component {
     const modifiedData = data.filter((eachRow) => {
       return !checkedBoxesList.includes(eachRow.id);
     });
+    console.log(modifiedData)
     this.setState({
       data: modifiedData,
       checkedBoxesList: [],
+      displayedData: modifiedData,
     });
   };
 

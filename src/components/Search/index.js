@@ -10,7 +10,7 @@ class Search extends Component {
   cheakSearchText = (rowData, searchText) =>{
       const rowValues = Object.values(rowData)
       for(let value of rowValues){
-          if(value.includes(searchText)){
+          if(value.toLowerCase().includes(searchText.toLowerCase())){
               return true
           }
       }
