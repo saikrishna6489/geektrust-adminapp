@@ -1,4 +1,4 @@
-import { Component } from "react";
+import React, { Component } from "react";
 import DataTable from "../DataTable";
 import EditData from "../EditData";
 import Search from "../Search";
@@ -17,6 +17,8 @@ class DataTableMain extends Component {
     pageData: [],
   };
 
+  searchChild = React.createRef()
+
   componentDidMount() {
     const { tableData } = this.props;
     this.setState({
@@ -32,6 +34,7 @@ class DataTableMain extends Component {
     if (prevState.currentPage !== this.state.currentPage) {
       this.filterDataByPagination();
     } else if (prevState.displayedData !== this.state.displayedData) {
+      console.log("ss")
       this.filterDataByPagination();
     }
   }
@@ -39,25 +42,37 @@ class DataTableMain extends Component {
   deleteRow = (id) => {
     const { data } = this.state;
     const modifiedData = data.filter((eachItem) => eachItem.id !== id);
-    this.setState({ data: modifiedData, displayedData: modifiedData });
+    this.setState({ data: modifiedData, displayedData: modifiedData }, ()=>{this.searchChild.current.updateSearchData(false)});
   };
 
   seteditRow = (id) => {
     const { data } = this.state;
     const editData = data.filter((eachItem) => eachItem.id === id);
-    this.setState({ editableData: editData[0], showEditPage: true });
+    const editableObj = editData[0]
+    console.log(editableObj)
+    this.setState({ editableData: editableObj, showEditPage: true });
   };
 
   editRowData = (rowData) => {
     const { data } = this.state;
-    const rowDataId = rowData.id;
-    const editData = data.filter((eachItem) => eachItem.id === rowDataId);
-    editData[rowDataId] = rowData;
-    this.setState({ data, showEditPage: false });
+    const modifiedData = data.map(eachrow => {
+      if (rowData.id === eachrow.id) {
+        return {...rowData}
+      }
+      return eachrow
+    })
+    this.setState({data:modifiedData, showEditPage:false, displayedData:modifiedData}, ()=>{this.searchChild.current.updateSearchData(false)})
   };
 
-  onUpdateSearch = (filteredData) => {
-    this.setState({ displayedData: filteredData, currentPage: 1 });
+  onUpdateSearch = (filteredData, isSearchChanged) => {
+    const { currentPage } = this.state
+    const { itemsPerPage } = this.props
+    let updatedPage = isSearchChanged ? 1 : currentPage
+    const noOfPages = Math.ceil(filteredData.length / itemsPerPage);
+    if(currentPage>noOfPages){
+      updatedPage = noOfPages
+    }
+    this.setState({ displayedData: filteredData, currentPage: updatedPage });
   };
 
   onClickCheakBox = (id) => {
@@ -76,12 +91,11 @@ class DataTableMain extends Component {
     const modifiedData = data.filter((eachRow) => {
       return !checkedBoxesList.includes(eachRow.id);
     });
-    console.log(modifiedData)
     this.setState({
       data: modifiedData,
       checkedBoxesList: [],
       displayedData: modifiedData,
-    });
+    }, ()=>{this.searchChild.current.updateSearchData(false)});
   };
 
   filterDataByPagination = () => {
@@ -176,7 +190,7 @@ class DataTableMain extends Component {
     return (
       <>
         <div className="home-container">
-          <Search entiredata={data} onUpdateSearch={this.onUpdateSearch} />
+          <Search entiredata={data} onUpdateSearch={this.onUpdateSearch} ref={this.searchChild} />
           {isLoading ? (
             "...loading"
           ) : (

@@ -14,21 +14,17 @@ class EditData extends Component {
     this.setState({ editedData: rowData, isLoading: false });
   }
 
-  componentDidUpdate(prevProp, prevState) {
-    if (prevProp.rowData !== this.props.rowData) {
-      this.setState({ editedData: this.props.rowData });
-    }
-  }
-
   onFeildChange = (feildKey, changedValue) => {
-    const { editedData } = this.state;
-    editedData[feildKey] = changedValue;
-    this.setState({ editedData });
+    const {editedData} = this.state
+    let changedData = {...editedData}
+    changedData[feildKey] = changedValue
+    this.setState(prevState=>({editedData: changedData}));
   };
 
   editRow = () => {
     const { editRowData } = this.props;
     const { editedData } = this.state;
+    console.log("editedData",editedData)
     editRowData(editedData);
   };
 
