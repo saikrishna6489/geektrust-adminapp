@@ -72,6 +72,10 @@ class DataTableMain extends Component {
     if(currentPage>noOfPages){
       updatedPage = noOfPages
     }
+    if(currentPage === 0){
+      updatedPage = 1
+    }
+    console.log(updatedPage)
     this.setState({ displayedData: filteredData, currentPage: updatedPage });
   };
 
@@ -137,21 +141,23 @@ class DataTableMain extends Component {
 
   renderTable = () => {
     const { pageData, checkedBoxesList } = this.state;
-    const { restrictedColumns } = this.props;
+    const { restrictedColumns, removable, editable } = this.props;
     return (
       <>
         <DataTable
           tableData={pageData}
+          removable={removable}
+          editable={editable}
+          checkedBoxesList={checkedBoxesList}
+          restrictedColumns={restrictedColumns}
           deleteRow={this.deleteRow}
           seteditRow={this.seteditRow}
           onClickCheakBox={this.onClickCheakBox}
-          checkedBoxesList={checkedBoxesList}
           onHeaderCheakBoxClicked={this.onHeaderCheakBoxClicked}
-          restrictedColumns={restrictedColumns}
         />
-        <button className="btn btn-danger" onClick={this.deleteAllCheckedItems}>
+        {removable && <button className="btn btn-danger" onClick={this.deleteAllCheckedItems}>
           Delete All
-        </button>
+        </button>}
       </>
     );
   };
@@ -189,8 +195,8 @@ class DataTableMain extends Component {
 
     return (
       <>
-        <div className="home-container">
-          <Search entiredata={data} onUpdateSearch={this.onUpdateSearch} ref={this.searchChild} />
+        <div className="home-container"><div className="d-flex">
+          <Search entiredata={data} onUpdateSearch={this.onUpdateSearch} ref={this.searchChild} /></div>
           {isLoading ? (
             "...loading"
           ) : (

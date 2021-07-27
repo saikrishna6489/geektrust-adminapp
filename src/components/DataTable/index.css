@@ -3,3 +3,6 @@
     height: 18px;
     cursor: pointer;
 }
+.data-table-header{
+    border-bottom: 3px solid #aea9a9ba;
+}

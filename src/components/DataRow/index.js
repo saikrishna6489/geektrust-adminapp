@@ -3,10 +3,18 @@ import { AiOutlineDelete } from "react-icons/ai";
 import "./index.css";
 
 const DataRow = (props) => {
-  const { rowData, deleteRow, seteditRow, onClickCheakBox, checkedBoxesList, restrictedColumns } =
-    props;
-  restrictedColumns.forEach(element => {
-    delete rowData[element]
+  const {
+    rowData,
+    deleteRow,
+    seteditRow,
+    onClickCheakBox,
+    checkedBoxesList,
+    restrictedColumns,
+    editable,
+    removable,
+  } = props;
+  restrictedColumns.forEach((element) => {
+    delete rowData[element];
   });
   const rowValues = Object.values(rowData);
   const isChecked = checkedBoxesList.includes(rowData.id);
@@ -36,12 +44,16 @@ const DataRow = (props) => {
         </td>
       ))}
       <td className="data-row-item data-row-action-item">
-        <button onClick={editRowData} className="btn">
-          <FiEdit />
-        </button>
-        <button onClick={deleteRowData} className="btn">
-          <AiOutlineDelete color="red" />
-        </button>
+        {editable && (
+          <button onClick={editRowData} className="btn">
+            <FiEdit />
+          </button>
+        )}
+        {removable && (
+          <button onClick={deleteRowData} className="btn">
+            <AiOutlineDelete color="red" />
+          </button>
+        )}
       </td>
     </tr>
   );

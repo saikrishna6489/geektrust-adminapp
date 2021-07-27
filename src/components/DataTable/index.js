@@ -23,6 +23,8 @@ class Home extends Component {
       onClickCheakBox,
       checkedBoxesList,
       restrictedColumns,
+      removable,
+      editable,
     } = this.props;
 
     if (tableData.length < 1) {
@@ -34,12 +36,12 @@ class Home extends Component {
     );
 
     const tableHeaders = Object.keys(tableData[0]);
-    const modifiedHeaders = tableHeaders.filter(eachHeader=>(
-      !restrictedColumns.includes(eachHeader)
-    ))
+    const modifiedHeaders = tableHeaders.filter(
+      (eachHeader) => !restrictedColumns.includes(eachHeader)
+    );
     return (
       <div className="data-table-container">
-        <table className="data-table-table table">
+        <table className="data-table-table table ">
           <thead>
             <tr className="data-table-header">
               <th className="data-table-header-action-item">
@@ -55,13 +57,17 @@ class Home extends Component {
                   {eachHeader}
                 </th>
               ))}
-              <th className="data-table-header-action-item">action</th>
+              {(removable || editable) && (
+                <th className="data-table-header-action-item">action</th>
+              )}
             </tr>
           </thead>
           <tbody>
             {tableData.map((eachRow) => (
               <DataRow
                 rowData={eachRow}
+                removable={removable}
+                editable={editable}
                 key={eachRow.id}
                 deleteRow={deleteRow}
                 seteditRow={seteditRow}
