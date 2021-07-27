@@ -4,7 +4,6 @@ const EditDataFeild = (props) => {
   const { feildKey, feildValue, onChangeValue } = props;
   const onValueChange = (e) => {
     const changedValue = e.target.value;
-    console.log(feildKey, changedValue)
     onChangeValue(feildKey, changedValue);
   };
   const isDisabled = feildKey === "id";

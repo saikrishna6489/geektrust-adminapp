@@ -24,7 +24,6 @@ class EditData extends Component {
   editRow = () => {
     const { editRowData } = this.props;
     const { editedData } = this.state;
-    console.log("editedData",editedData)
     editRowData(editedData);
   };
 

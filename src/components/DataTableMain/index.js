@@ -34,7 +34,6 @@ class DataTableMain extends Component {
     if (prevState.currentPage !== this.state.currentPage) {
       this.filterDataByPagination();
     } else if (prevState.displayedData !== this.state.displayedData) {
-      console.log("ss")
       this.filterDataByPagination();
     }
   }
@@ -49,7 +48,6 @@ class DataTableMain extends Component {
     const { data } = this.state;
     const editData = data.filter((eachItem) => eachItem.id === id);
     const editableObj = editData[0]
-    console.log(editableObj)
     this.setState({ editableData: editableObj, showEditPage: true });
   };
 
@@ -75,7 +73,6 @@ class DataTableMain extends Component {
     if(currentPage === 0){
       updatedPage = 1
     }
-    console.log(updatedPage)
     this.setState({ displayedData: filteredData, currentPage: updatedPage });
   };
 
@@ -195,8 +192,8 @@ class DataTableMain extends Component {
 
     return (
       <>
-        <div className="home-container"><div className="d-flex">
-          <Search entiredata={data} onUpdateSearch={this.onUpdateSearch} ref={this.searchChild} /></div>
+        <div className="home-container">
+          <Search entiredata={data} onUpdateSearch={this.onUpdateSearch} ref={this.searchChild} />
           {isLoading ? (
             "...loading"
           ) : (

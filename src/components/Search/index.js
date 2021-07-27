@@ -19,7 +19,6 @@ class Search extends Component {
   updateSearchData = (isSearchChanged) => {
     const { entiredata, onUpdateSearch } = this.props;
     const { searchText } = this.state
-    console.log(searchText)
     const filteredData = entiredata.filter((eachRowData) =>
       this.cheakSearchText(eachRowData, searchText)
     );
@@ -39,7 +38,7 @@ class Search extends Component {
           className="search-input form-control"
           type="text"
           value={searchText}
-          placeholder="search"
+          placeholder="Search"
           onChange={this.onChangeSearch}
         />
       </div>
