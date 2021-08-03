@@ -15,9 +15,10 @@ class DataTableMain extends Component {
     showEditPage: false,
     currentPage: 1,
     pageData: [],
+    sortingColumnName: "id",
   };
 
-  searchChild = React.createRef()
+  searchChild = React.createRef();
 
   componentDidMount() {
     const { tableData } = this.props;
@@ -38,40 +39,64 @@ class DataTableMain extends Component {
     }
   }
 
+  sortByColumn = (columnName, sortOrder)=>{
+    console.log(columnName, sortOrder) 
+    const {data} = this.state 
+    const sortedData = data.sort((a,b)=>{
+      const condition = sortOrder === "asc" ? a[columnName] > b[columnName] : a[columnName] < b[columnName]
+      if(condition){
+        return 1
+      } else{
+        return -1
+      }
+    })
+    console.log(sortedData)
+    this.setState({displayedData:sortedData},() => {
+      this.searchChild.current.updateSearchData(false);
+    })
+  }
+
   deleteRow = (id) => {
     const { data } = this.state;
     const modifiedData = data.filter((eachItem) => eachItem.id !== id);
-    this.setState({ data: modifiedData, displayedData: modifiedData }, ()=>{this.searchChild.current.updateSearchData(false)});
+    this.setState({ data: modifiedData, displayedData: modifiedData }, () => {
+      this.searchChild.current.updateSearchData(false);
+    });
   };
 
   seteditRow = (id) => {
     const { data } = this.state;
     const editData = data.filter((eachItem) => eachItem.id === id);
-    const editableObj = editData[0]
+    const editableObj = editData[0];
     this.setState({ editableData: editableObj, showEditPage: true });
   };
 
   editRowData = (rowData) => {
     const { data } = this.state;
-    const modifiedData = data.map(eachrow => {
+    const modifiedData = data.map((eachrow) => {
       if (rowData.id === eachrow.id) {
-        return {...rowData}
+        return { ...rowData };
       }
-      return eachrow
-    })
-    this.setState({data:modifiedData, showEditPage:false, displayedData:modifiedData}, ()=>{this.searchChild.current.updateSearchData(false)})
+      return eachrow;
+    });
+    this.setState(
+      { data: modifiedData, showEditPage: false, displayedData: modifiedData },
+      () => {
+        this.searchChild.current.updateSearchData(false);
+      }
+    );
   };
 
   onUpdateSearch = (filteredData, isSearchChanged) => {
-    const { currentPage } = this.state
-    const { itemsPerPage } = this.props
-    let updatedPage = isSearchChanged ? 1 : currentPage
+    const { currentPage } = this.state;
+    const { itemsPerPage } = this.props;
+    let updatedPage = isSearchChanged ? 1 : currentPage;
     const noOfPages = Math.ceil(filteredData.length / itemsPerPage);
-    if(currentPage>noOfPages){
-      updatedPage = noOfPages
+    if (currentPage > noOfPages) {
+      updatedPage = noOfPages;
     }
-    if(currentPage === 0){
-      updatedPage = 1
+    if (currentPage === 0) {
+      updatedPage = 1;
     }
     this.setState({ displayedData: filteredData, currentPage: updatedPage });
   };
@@ -79,6 +104,7 @@ class DataTableMain extends Component {
   onClickCheakBox = (id) => {
     const { checkedBoxesList } = this.state;
     const index = checkedBoxesList.indexOf(id);
+    console.log(id)
     if (index > -1) {
       checkedBoxesList.splice(index, 1);
     } else {
@@ -92,11 +118,16 @@ class DataTableMain extends Component {
     const modifiedData = data.filter((eachRow) => {
       return !checkedBoxesList.includes(eachRow.id);
     });
-    this.setState({
-      data: modifiedData,
-      checkedBoxesList: [],
-      displayedData: modifiedData,
-    }, ()=>{this.searchChild.current.updateSearchData(false)});
+    this.setState(
+      {
+        data: modifiedData,
+        checkedBoxesList: [],
+        displayedData: modifiedData,
+      },
+      () => {
+        this.searchChild.current.updateSearchData(false);
+      }
+    );
   };
 
   filterDataByPagination = () => {
@@ -151,10 +182,16 @@ class DataTableMain extends Component {
           seteditRow={this.seteditRow}
           onClickCheakBox={this.onClickCheakBox}
           onHeaderCheakBoxClicked={this.onHeaderCheakBoxClicked}
+          sortByColumn={this.sortByColumn}
         />
-        {removable && <button className="btn btn-danger" onClick={this.deleteAllCheckedItems}>
-          Delete All
-        </button>}
+        {removable && (
+          <button
+            className="btn btn-danger"
+            onClick={this.deleteAllCheckedItems}
+          >
+            Delete All
+          </button>
+        )}
       </>
     );
   };
@@ -193,7 +230,11 @@ class DataTableMain extends Component {
     return (
       <>
         <div className="home-container">
-          <Search entiredata={data} onUpdateSearch={this.onUpdateSearch} ref={this.searchChild} />
+          <Search
+            entiredata={data}
+            onUpdateSearch={this.onUpdateSearch}
+            ref={this.searchChild}
+          />
           {isLoading ? (
             "...loading"
           ) : (
@@ -219,7 +260,7 @@ DataTableMain.defaultProps = {
   restrictedEditColumns: [],
   itemsPerPage: 10,
   removable: true,
-  editable:true
+  editable: true,
 };
 
 export default DataTableMain;

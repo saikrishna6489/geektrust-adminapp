@@ -30,7 +30,7 @@ class Home extends Component {
           <p>'...isloading'</p>
         ) : (
           <DataTableMain
-            itemsPerPage={5}
+            itemsPerPage={7}
             tableData={data}
             restrictedColumns={[]}
             restrictedEditColumns={[]}

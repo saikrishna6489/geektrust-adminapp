@@ -21,6 +21,10 @@ we should provide props for the DataTableMain component
 
 ### `restrictedEditColumns` -> pass the array of column key names that you dont want to be editable on table
 
+### `editable` -> default value 'true' if set to false the edit button wont be displayed
+
+### `removable` -> default value 'true' if set to false the delete button wont be displayed
+
 ## 'warning ' : provided json data must have 'id' key  
 
 ## this table works with json data with many number of columns 

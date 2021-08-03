@@ -1,4 +1,5 @@
 import { Component } from "react";
+import {HiOutlineSortDescending, HiOutlineSortAscending} from 'react-icons/hi'
 import DataRow from "../DataRow";
 import "./index.css";
 
@@ -25,6 +26,7 @@ class Home extends Component {
       restrictedColumns,
       removable,
       editable,
+      sortByColumn
     } = this.props;
 
     if (tableData.length < 1) {
@@ -54,7 +56,9 @@ class Home extends Component {
               </th>
               {modifiedHeaders.map((eachHeader) => (
                 <th className="data-table-header-item" key={eachHeader}>
-                  {eachHeader}
+                  {eachHeader} 
+                  <HiOutlineSortAscending onClick={()=>sortByColumn(eachHeader, "asc")} /> 
+                  <HiOutlineSortDescending onClick={()=>sortByColumn(eachHeader, "des")} />
                 </th>
               ))}
               {(removable || editable) && (
