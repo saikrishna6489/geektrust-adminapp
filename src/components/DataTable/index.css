@@ -6,3 +6,9 @@
 .data-table-header{
     border-bottom: 3px solid #aea9a9ba;
 }
+.data-table-no-data-message{
+    text-align: center;
+    text-transform: uppercase;
+    color: red;
+    font-size: 20px;
+}

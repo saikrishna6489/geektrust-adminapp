@@ -9,28 +9,51 @@ class Pagination extends Component {
     totalPages: [],
     startIndex: 1,
     lastIndex: 1,
+    displayedPages: [],
   };
 
   componentDidMount(prev) {
     this.setPaginationValues();
   }
 
-  componentDidUpdate(prevProp, prevState) {
-    const { currentPage } = this.state;
-    if (
-      prevState.currentPage !== currentPage ||
-      prevProp.totalItems !== this.props.totalItems
-    ) {
+  componentDidUpdate(prevProp) {
+    const isTotalItemsChanged = prevProp.totalItems !== this.props.totalItems
+    const isCurrentPageChanged = prevProp.currentPage !== this.props.currentPage
+    const isItemsPerPageChanged = prevProp.itemsPerPage !== this.props.itemsPerPage
+    if (isItemsPerPageChanged || isCurrentPageChanged || isTotalItemsChanged) {
       this.setPaginationValues();
     }
   }
 
   setPaginationValues = () => {
-    const { totalItems, itemsPerPage } = this.props;
+    const { totalItems, itemsPerPage, currentPage, siblingCount, changeCurrentPage } = this.props;
+    console.log(currentPage);
+    let currentDisplayPage = currentPage
     const noOfPages = Math.ceil(totalItems / itemsPerPage);
+    if(currentDisplayPage > noOfPages){
+      changeCurrentPage(noOfPages)
+      return
+    }
     const lastIndex = noOfPages;
-    const totalPages = Array.from(Array(noOfPages));
-    this.setState({ totalPages, lastIndex });
+    let totalPages = Array.from(Array(noOfPages).keys());
+    console.log(totalPages.length);
+    let displayedPages = [];
+
+    if(noOfPages <= siblingCount*2+4+1){
+      displayedPages = totalPages
+    } else if(currentPage <= siblingCount+3){
+      displayedPages = totalPages.slice(0, siblingCount*2+3)
+      displayedPages = displayedPages.concat(['...', noOfPages-1])
+    } else if(currentPage >= noOfPages-(siblingCount+2)){
+      displayedPages = totalPages.slice(noOfPages-(siblingCount*2+3) )
+      displayedPages = [0, '...'].concat(displayedPages)
+    } else{
+      displayedPages = totalPages.slice(currentPage-siblingCount-1, currentPage+siblingCount)
+      displayedPages = [0, '...'].concat(displayedPages)
+      displayedPages = displayedPages.concat(['...', noOfPages-1])
+    }
+
+    this.setState({ totalPages, lastIndex, displayedPages });
   };
 
   onClickForward = () => {
@@ -65,23 +88,39 @@ class Pagination extends Component {
   };
 
   render() {
-    const { totalPages } = this.state;
+    const { displayedPages } = this.state;
     const { currentPage } = this.props;
     return (
       <div className="pagination-container d-flex flex-row justify-content-center">
         <div className="pagination-section">
-          <ImBackward2 size="1.6em" onClick={this.onClickFastBackward} className="page-icon"/>
-          <FaChevronLeft size="1.3em" onClick={this.onClickBackward} className="page-icon"/>
-          {totalPages.map((eachPage, index) => (
+          <ImBackward2
+            size="1.6em"
+            onClick={this.onClickFastBackward}
+            className="page-icon"
+          />
+          <FaChevronLeft
+            size="1.3em"
+            onClick={this.onClickBackward}
+            className="page-icon"
+          />
+          {displayedPages.map((eachPage, index) => { const pageNum = isNaN(eachPage) ? eachPage : eachPage+1; return(
             <PaginationItem
               currentPage={currentPage}
-              pageNo={index + 1}
+              pageNo={pageNum}
               setCurrentPage={this.setCurrentPage}
               key={`page${index + 1}`}
             />
-          ))}
-          <FaChevronRight size="1.3em" onClick={this.onClickForward} className="page-icon"/>
-          <ImForward3 size="1.6em" onClick={this.onClickFastForward} className="page-icon"/>
+          )})}
+          <FaChevronRight
+            size="1.3em"
+            onClick={this.onClickForward}
+            className="page-icon"
+          />
+          <ImForward3
+            size="1.6em"
+            onClick={this.onClickFastForward}
+            className="page-icon"
+          />
         </div>
       </div>
     );

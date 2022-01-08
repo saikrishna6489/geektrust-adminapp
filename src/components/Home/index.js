@@ -24,13 +24,13 @@ class Home extends Component {
 
   render() {
     const { data, isLoading } = this.state;
+    
     return (
       <>
         {isLoading ? (
           <p>'...isloading'</p>
         ) : (
           <DataTableMain
-            itemsPerPage={7}
             tableData={data}
             restrictedColumns={[]}
             restrictedEditColumns={[]}

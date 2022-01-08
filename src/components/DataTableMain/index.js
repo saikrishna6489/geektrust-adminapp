@@ -15,6 +15,7 @@ class DataTableMain extends Component {
     showEditPage: false,
     currentPage: 1,
     pageData: [],
+    itemsPerPage: 10,
     sortingColumnName: "id",
   };
 
@@ -32,9 +33,10 @@ class DataTableMain extends Component {
   }
 
   componentDidUpdate(prevProp, prevState) {
-    if (prevState.currentPage !== this.state.currentPage) {
-      this.filterDataByPagination();
-    } else if (prevState.displayedData !== this.state.displayedData) {
+    const isCurrentPageChanged = prevState.currentPage !== this.state.currentPage
+    const isDisplayedDataChanged = prevState.displayedData !== this.state.displayedData
+    const isItemsPerPageChanged = prevState.itemsPerPage !== this.state.itemsPerPage
+    if (isCurrentPageChanged || isDisplayedDataChanged || isItemsPerPageChanged) {
       this.filterDataByPagination();
     }
   }
@@ -88,8 +90,7 @@ class DataTableMain extends Component {
   };
 
   onUpdateSearch = (filteredData, isSearchChanged) => {
-    const { currentPage } = this.state;
-    const { itemsPerPage } = this.props;
+    const { currentPage, itemsPerPage } = this.state;
     let updatedPage = isSearchChanged ? 1 : currentPage;
     const noOfPages = Math.ceil(filteredData.length / itemsPerPage);
     if (currentPage > noOfPages) {
@@ -131,8 +132,7 @@ class DataTableMain extends Component {
   };
 
   filterDataByPagination = () => {
-    const { currentPage, displayedData } = this.state;
-    const { itemsPerPage } = this.props;
+    const { currentPage, displayedData, itemsPerPage} = this.state;
     const lastIndex = currentPage * itemsPerPage;
     const startIndex = lastIndex - itemsPerPage;
     const pageData = displayedData.slice(startIndex, lastIndex);
@@ -167,8 +167,12 @@ class DataTableMain extends Component {
     }
   };
 
+  onItemsPerPageChange = (event) => {
+    this.setState({itemsPerPage: parseInt(event.target.value)})
+  }
+
   renderTable = () => {
-    const { pageData, checkedBoxesList } = this.state;
+    const { pageData, checkedBoxesList, itemsPerPage } = this.state;
     const { restrictedColumns, removable, editable } = this.props;
     return (
       <>
@@ -184,14 +188,27 @@ class DataTableMain extends Component {
           onHeaderCheakBoxClicked={this.onHeaderCheakBoxClicked}
           sortByColumn={this.sortByColumn}
         />
-        {removable && (
-          <button
-            className="btn btn-danger"
-            onClick={this.deleteAllCheckedItems}
-          >
-            Delete All
-          </button>
-        )}
+        <div className="" style={{display: 'flex', justifyContent:'space-between'}}>
+          {removable && (
+            <button
+              className="btn btn-danger"
+              onClick={this.deleteAllCheckedItems}
+            >
+              Delete Selected
+            </button>
+          )}
+          <div>
+            <span>Rows per page : </span>
+            <select className="rows-per-page-select" value={itemsPerPage} onChange={this.onItemsPerPageChange}>
+              <option value={5}>5</option>
+              <option value={6}>6</option>
+              <option value={7}>7</option>
+              <option value={8}>8</option>
+              <option value={9}>9</option>
+              <option value={10}>10</option>
+            </select>
+          </div>
+        </div>
       </>
     );
   };
@@ -224,8 +241,7 @@ class DataTableMain extends Component {
   };
 
   render() {
-    const { data, isLoading, displayedData, currentPage } = this.state;
-    const { itemsPerPage } = this.props;
+    const { data, isLoading, displayedData, currentPage, itemsPerPage } = this.state;
 
     return (
       <>
@@ -246,6 +262,7 @@ class DataTableMain extends Component {
                 itemsPerPage={itemsPerPage}
                 changeCurrentPage={this.changeCurrentPage}
                 currentPage={currentPage}
+                siblingCount={1}
               />
             </>
           )}
@@ -258,7 +275,6 @@ class DataTableMain extends Component {
 DataTableMain.defaultProps = {
   restrictedColumns: [],
   restrictedEditColumns: [],
-  itemsPerPage: 10,
   removable: true,
   editable: true,
 };

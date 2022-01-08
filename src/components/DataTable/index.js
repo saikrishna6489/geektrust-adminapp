@@ -1,5 +1,8 @@
 import { Component } from "react";
-import {HiOutlineSortDescending, HiOutlineSortAscending} from 'react-icons/hi'
+import {
+  HiOutlineSortDescending,
+  HiOutlineSortAscending,
+} from "react-icons/hi";
 import DataRow from "../DataRow";
 import "./index.css";
 
@@ -26,11 +29,11 @@ class Home extends Component {
       restrictedColumns,
       removable,
       editable,
-      sortByColumn
+      sortByColumn,
     } = this.props;
 
     if (tableData.length < 1) {
-      return <p>no data found</p>;
+      return <p className="data-table-no-data-message">no data found</p>;
     }
 
     const isChecked = tableData.every((eachRow) =>
@@ -56,9 +59,19 @@ class Home extends Component {
               </th>
               {modifiedHeaders.map((eachHeader) => (
                 <th className="data-table-header-item" key={eachHeader}>
-                  {eachHeader} 
-                  <HiOutlineSortAscending onClick={()=>sortByColumn(eachHeader, "asc")} /> 
-                  <HiOutlineSortDescending onClick={()=>sortByColumn(eachHeader, "des")} />
+                  {eachHeader}
+                  {eachHeader !== "id" ? (
+                    <>
+                      <HiOutlineSortAscending style={{cursor:"pointer"}}
+                        onClick={() => sortByColumn(eachHeader, "asc")}
+                      />
+                      <HiOutlineSortDescending style={{cursor:"pointer"}}
+                        onClick={() => sortByColumn(eachHeader, "des")}
+                      />{" "}
+                    </>
+                  ) : (      
+                    ""
+                  )}
                 </th>
               ))}
               {(removable || editable) && (

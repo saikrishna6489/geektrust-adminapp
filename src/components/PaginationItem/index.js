@@ -8,9 +8,15 @@ const PaginationItem = (props) => {
     setCurrentPage(pageNo);
   };
   return (
-    <span className={`${pageClassName}`} onClick={changeCurrentPage}>
-      {pageNo}
-    </span>
+    <>
+      {! isNaN(pageNo) ? (
+        <span className={`${pageClassName}`} onClick={changeCurrentPage}>{pageNo}</span>
+      ) : (
+        <span className={`${pageClassName}`} >
+          {pageNo}
+        </span>
+      )}
+    </>
   );
 };
 
